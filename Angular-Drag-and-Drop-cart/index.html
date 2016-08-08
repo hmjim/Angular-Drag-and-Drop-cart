@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru" ng-app="drag-and-drop">
+<head>
+	<meta charset="utf-8" />
+	<title>Drag &amp; Drop - корзина</title>
+    <meta name="viewport" content="width=1200, initial-scale=1">
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,500&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+	<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/main.css" rel="stylesheet">
+</head>
+<body ng-controller="cartCtrl as vm">
+	<header>
+	</header>
+	<section>
+		<div class='container'>
+			<div class='row'>
+				<div id='info'>
+					<p>Для добавления товара,</br> Удерживайте его мышкой и перенесите в корзину</p>
+				</div>
+				<div id="products">
+				  <h1 class="title">Товары</h1>
+				  <div id="catalog">
+					<div>
+					  <ul data-drop="false" ng-model='vm.list'  jqyoui-droppable="{multiple:true}">
+						<li  ng-repeat='item in vm.list track by $index' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="vm.list" jqyoui-draggable="{index: {{$index}}, animate: false, placeholder: 'keep'}" >
+							<div class='ingwrap'>
+								<img src='{{item.img}}' alt='{{item.title}}'>
+							</div>
+							<div class='content_wrap row-fluid show-grid'>
+								<div class='span6'>
+									<h4 class='content_title'>
+										{{item.title}}
+									</h4>
+									<div class='content_desc'>
+										{{item.desc}}
+									</div>
+								</div>
+								<div class='span6'>
+									<div class='content_countchek'>
+										<span ng-model='vm' ng-click="vm.minus($index)">−</span>
+										<span>
+											{{item.countchek}}
+										</span>
+										<span ng-model='vm' ng-click="vm.plus($index)">+</span>
+									</div>
+									<div class='content_price'>
+										{{item.countchek}} X {{item.price}} ₽
+									</div>
+								</div>
+							</div>
+							<div class='content_footer'>
+								* Остаток на складе {{item.count}} шт.
+							</div>
+						</li>
+					  </ul>
+					</div>
+				  </div>
+				</div>
+
+				<div id="cart">
+					<h1 class="title">
+						Корзина
+					</h1>
+					<div class="content">
+						<ol data-drop="true" ng-model='vm.cart' jqyoui-droppable="{multiple:true, onOver : 'vm.overCart()'}">
+							<li ng-repeat="item in vm.cart track by $index" ng-show="item.title" data-drag="false"   data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="vm.cart" jqyoui-draggable="{index: {{$index}}, animate:false}" jqyoui-droppable="{index: {{$index}}">
+								<div class='ingwrap'>
+									<img src='{{item.img}}' alt='{{item.title}}'>
+									<a class='del' ng-model="vm" ng-click='vm.deleteCart($index)'></a>
+								</div>
+								<div class='content_wrap row-fluid show-grid'>
+									<div class='span6'>
+										<h4 class='content_title'>
+											{{item.title}}
+										</h4>
+										<div class='content_desc'>
+											{{item.desc}}
+										</div>
+									</div>
+									<div class='span6'>
+										<div class='content_countchek'>
+											<span></span>
+											<span>
+												{{item.countchek}}
+											</span>
+											<span></span>
+										</div>
+										<div class='content_price'>
+											{{item.countchek}} X {{item.price}} ₽
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="placeholder" ng-model="vm" ng-hide="vm.hideMe()"></li>
+						</ol>
+					</div>
+					<div class='itogo'>
+						<div class='itogo_wrap row-fluid show-grid'>
+							<div class='span6'>
+								Итого:
+							</div>
+							<div ng-model="vm" class='span6'>
+								{{vm.total()}} ₽
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer></footer>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+	<script src="../js/angular-dragdrop.js"></script>
+	<script src="../js/main.js"></script>
+</body>
+</html>
